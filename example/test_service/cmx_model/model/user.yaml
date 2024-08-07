@@ -1,0 +1,105 @@
+statement_definition:
+    user:
+        statement: |-
+            CREATE TABLE `user` (
+                `id` bigint unsigned NOT NULL COMMENT '用户ID',
+                `sex` char(1) NOT NULL DEFAULT '0' COMMENT '性别,[0:未知,1:男,2:女]',
+                `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '用户类型',
+                `passwd` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '密码',
+                `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '姓名',
+                `avatar` varchar(104) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '头像',
+                `nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '昵称',
+                `mobile` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '手机号',
+                `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT '' COMMENT '邮箱',
+                `switch` char(1) NOT NULL DEFAULT '1' COMMENT '开关',
+                `created_at` datetime NOT NULL COMMENT '创建时间',
+                `updated_at` datetime NOT NULL COMMENT '更新时间',
+                `deleted_at` bigint NOT NULL DEFAULT '0' COMMENT '软删标识符',
+                PRIMARY KEY (`id`) USING BTREE,
+                UNIQUE KEY `user_mobile_email` (`email`, `mobile`)
+            ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC COMMENT = '用户'
+table_definition:
+    user:
+        - column_name: id
+          type: uint64
+          comment: 用户ID
+        - column_name: type
+          type: string
+          comment: 用户类型
+        - column_name: passwd
+          type: string
+          comment: 密码
+        - column_name: name
+          type: string
+          comment: 姓名
+        - column_name: avatar
+          type: string
+          comment: 头像
+        - column_name: nickname
+          type: string
+          comment: 昵称
+        - column_name: mobile
+          type: string
+          comment: 手机号
+        - column_name: email
+          type: string
+          comment: 邮箱
+        - column_name: switch
+          type: string
+          comment: 开关
+        - column_name: created_at
+          type: time.Time
+          comment: 创建时间
+        - column_name: updated_at
+          type: time.Time
+          comment: 更新时间
+        - column_name: deleted_at
+          type: soft_delete.DeletedAt
+          comment: 软删标识符
+        - column_name: sex
+          type: string
+          comment: 性别,[0:未知,1:男,2:女]
+message_definition:
+    user:
+        - column_name: id
+          type: uint64
+          comment: 用户ID
+        - column_name: type
+          type: string
+          comment: 用户类型
+        - column_name: passwd
+          type: string
+          comment: 密码
+        - column_name: name
+          type: string
+          comment: 姓名
+        - column_name: avatar
+          type: string
+          comment: 头像
+        - column_name: nickname
+          type: string
+          comment: 昵称
+        - column_name: mobile
+          type: string
+          comment: 手机号
+        - column_name: email
+          type: string
+          comment: 邮箱
+        - column_name: switch
+          type: string
+          comment: 开关
+        - column_name: created_at
+          type: int64
+          comment: 创建时间
+          serializer: unixtime
+        - column_name: updated_at
+          type: int64
+          comment: 更新时间
+          serializer: unixtime
+        - column_name: deleted_at
+          type: int64
+          comment: 软删标识符
+        - column_name: sex
+          type: string
+          comment: 性别,[0:未知,1:男,2:女]
+enums_definition: {}

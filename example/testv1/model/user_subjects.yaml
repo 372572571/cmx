@@ -1,0 +1,122 @@
+statement_definition:
+    user_subjects:
+        statement: |-
+            CREATE TABLE `user_subjects` (
+              `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+              `user_id` bigint(20) NOT NULL COMMENT 'user_id',
+              `company_name` varchar(24) NOT NULL DEFAULT '' COMMENT '公司名称',
+              `juridical_person` varchar(24) NOT NULL DEFAULT '' COMMENT '公司法人名称',
+              `id_card` varchar(32) NOT NULL DEFAULT '' COMMENT '身份证号',
+              `uniform_code` varchar(32) NOT NULL DEFAULT '' COMMENT '统一信用代码',
+              `address` varchar(108) NOT NULL DEFAULT '' COMMENT '公司地址',
+              `capital` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册资金',
+              `creation_time` bigint(20) NOT NULL DEFAULT '0' COMMENT '公司创建时间',
+              `scopes` varchar(512) NOT NULL DEFAULT '' COMMENT '经营范围',
+              `license` varchar(124) NOT NULL DEFAULT '' COMMENT '营业执照',
+              `photo` varchar(2048) NOT NULL DEFAULT '' COMMENT '公司环境',
+              `status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否当前选择主体[1默认 2选中]',
+              `deleted_at` bigint(20) NOT NULL DEFAULT '0',
+              `updated_at` datetime NOT NULL COMMENT '更新时间',
+              `created_at` datetime NOT NULL,
+              PRIMARY KEY (`id`) USING BTREE,
+              KEY `idx_user_id_company_name` (`user_id`,`company_name`) USING BTREE
+            ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COMMENT='个人用户主体'
+table_definition:
+    user_subjects:
+        - column_name: id
+          type: int64
+          comment: 自增id
+        - column_name: user_id
+          type: int64
+          comment: user_id
+        - column_name: company_name
+          type: string
+          comment: 公司名称
+        - column_name: juridical_person
+          type: string
+          comment: 公司法人名称
+        - column_name: id_card
+          type: string
+          comment: 身份证号
+        - column_name: uniform_code
+          type: string
+          comment: 统一信用代码
+        - column_name: address
+          type: string
+          comment: 公司地址
+        - column_name: capital
+          type: int
+          comment: 注册资金
+        - column_name: creation_time
+          type: int64
+          comment: 公司创建时间
+        - column_name: scopes
+          type: string
+          comment: 经营范围
+        - column_name: license
+          type: string
+          comment: 营业执照
+        - column_name: photo
+          type: string
+          comment: 公司环境
+        - column_name: status
+          type: int
+          comment: 是否当前选择主体[1默认 2选中]
+        - column_name: deleted_at
+          type: soft_delete.DeletedAt
+          comment: ""
+        - column_name: updated_at
+          type: time.Time
+          comment: 更新时间
+        - column_name: created_at
+          type: time.Time
+          comment: ""
+message_definition:
+    user_subjects:
+        - column_name: id
+          type: int64
+          comment: 自增id
+        - column_name: user_id
+          type: int64
+          comment: user_id
+        - column_name: company_name
+          type: string
+          comment: 公司名称
+        - column_name: juridical_person
+          type: string
+          comment: 公司法人名称
+        - column_name: id_card
+          type: string
+          comment: 身份证号
+        - column_name: uniform_code
+          type: string
+          comment: 统一信用代码
+        - column_name: address
+          type: string
+          comment: 公司地址
+        - column_name: capital
+          type: int32
+          comment: 注册资金
+        - column_name: creation_time
+          type: int64
+          comment: 公司创建时间
+        - column_name: scopes
+          type: string
+          comment: 经营范围
+        - column_name: license
+          type: string
+          comment: 营业执照
+        - column_name: photo
+          type: string
+          comment: 公司环境
+        - column_name: status
+          type: int32
+          comment: 是否当前选择主体[1默认 2选中]
+        - column_name: deleted_at
+          type: int64
+        - column_name: updated_at
+          type: int64
+          comment: 更新时间
+        - column_name: created_at
+          type: int64
+enums_definition: {}

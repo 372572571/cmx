@@ -1,0 +1,108 @@
+api_definition:
+  user:
+    - name: general_user_list
+      http:
+        method: post
+        path: v1/user/general-user-list
+        body: "*"
+        summary: "用户列表"
+      request: admin.user.general_user_list.general_user_list_request
+      response: admin.user.general_user_list.general_user_list_response
+      sign_type: ""
+      description: ""
+
+message_definition:
+  general_user_list_request:
+    - column_name: page_break
+      ref:
+        type: message
+        ref: default.group.page
+      inhibit: "required"
+      validator: "required"
+    - column_name: is_auth
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - is_auth
+    - column_name: type
+      type: string
+      array: true
+      oneof:
+        ref: model.user.type
+        select:
+            - '*'
+      validator: "omitempty,dive,${oneof}" 
+    - column_name: nickname
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - nickname
+    - column_name: mobile
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - mobile
+    - column_name: name
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - name
+    - column_name: region
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - region
+    - column_name: reg_time_from
+      type: int32
+      comment: "开始"
+    - column_name: reg_time_to
+      type: int32
+      comment: "结束"
+    - column_name: luobo_id
+      ref:
+        type: message_field
+        ref: model.user.user
+        select:
+          - luobo_id
+    - column_name: status
+      type: string
+      array: true
+      oneof:
+        ref: model.user.status
+        select:
+            - '*'
+      validator: "omitempty,dive,${oneof}" 
+    - column_name: isApplyUserProduct
+      type: int32
+      oneof:
+        ref: default.group.boolean
+        select: ["*"]
+        is_key: false
+      validator: "omitempty,${oneof}"
+      comment: "是否查看用户需要审批的产品"
+  general_user_list_response:
+    - column_name: user
+      array: true
+      ref:
+        type: message
+        ref: admin.user.general_user_list.general_user_list_item
+    - column_name: page_break
+      ref:
+        type: message
+        ref: default.group.page
+      inhibit: "required"
+      validator: "required"    
+  general_user_list_item:
+    - column_name: user
+      ref:
+        type: message
+        ref: model.user.user
+    - column_name: user_subject
+      ref:
+        type: message
+        ref: model.user_subjects.user_subjects

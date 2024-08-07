@@ -1,0 +1,20 @@
+api_definition:
+
+  user:
+  - name: refresh_token
+    http:
+      method: post
+      path: user/refresh-token
+      body: '*'
+      summary: "刷新用户token"
+    request: admin.user.refresh_token.refresh_token_request
+    response: admin.user.refresh_token.refresh_token_response
+    sign_type: ""
+    description: ""
+
+message_definition:
+  refresh_token_request:
+  refresh_token_response:
+  - column_name: token
+    type: string
+    comment: "token"

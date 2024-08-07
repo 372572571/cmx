@@ -1,0 +1,39 @@
+{
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+    },
+    "go.testFlags": [
+        "-count=1"
+    ], // 禁止 go test 缓存 
+    "clang-format.executable": "/bin/clang-format",
+    "zenMode.hideStatusBar": false,
+    "editor.suggest.showStatusBar": true,
+    "workbench.panel.defaultLocation": "left",
+    "github.copilot.chat.localeOverride": "zh-CN",
+    "vim.cursorStylePerMode": {
+        "normal": "block",
+        "insert": "line-thin",
+        "replace": "block-outline",
+    },
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "j",
+                "k"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        }
+    ],
+    "remote.extensionKind": {
+        "GitHub.copilot": [
+            "ui"
+        ],
+        "GitHub.copilot-chat": [
+            "ui"
+        ],
+    },
+}

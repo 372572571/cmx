@@ -1,0 +1,72 @@
+statement_definition:
+    oauth2_authorization_codes:
+        statement: |-
+            CREATE TABLE `oauth2_authorization_codes` (
+              `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '授权码ID',
+              `authorization_code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '授权码',
+              `client_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '客户端ID',
+              `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+              `expires_at` bigint NOT NULL COMMENT '过期时间',
+              `created_at` datetime NOT NULL COMMENT '创建时间',
+              `updated_at` datetime NOT NULL COMMENT '更新时间',
+              `deleted_at` bigint DEFAULT '0' COMMENT '删除时间',
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `client_id` (`client_id`,`user_id`),
+              KEY `user_id` (`user_id`),
+              CONSTRAINT `oauth2_authorization_codes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='OAuth2.0授权码表'
+table_definition:
+    oauth2_authorization_codes:
+        - column_name: id
+          type: uint64
+          comment: 授权码ID
+        - column_name: authorization_code
+          type: string
+          comment: 授权码
+        - column_name: client_id
+          type: string
+          comment: 客户端ID
+        - column_name: user_id
+          type: uint64
+          comment: 用户ID
+        - column_name: expires_at
+          type: int64
+          comment: 过期时间
+        - column_name: created_at
+          type: time.Time
+          comment: 创建时间
+        - column_name: updated_at
+          type: time.Time
+          comment: 更新时间
+        - column_name: deleted_at
+          type: soft_delete.DeletedAt
+          comment: 删除时间
+message_definition:
+    oauth2_authorization_codes:
+        - column_name: id
+          type: uint64
+          comment: 授权码ID
+        - column_name: authorization_code
+          type: string
+          comment: 授权码
+        - column_name: client_id
+          type: string
+          comment: 客户端ID
+        - column_name: user_id
+          type: uint64
+          comment: 用户ID
+        - column_name: expires_at
+          type: int64
+          comment: 过期时间
+        - column_name: created_at
+          type: int64
+          comment: 创建时间
+          serializer: unixtime
+        - column_name: updated_at
+          type: int64
+          comment: 更新时间
+          serializer: unixtime
+        - column_name: deleted_at
+          type: int64
+          comment: 删除时间
+enums_definition: {}

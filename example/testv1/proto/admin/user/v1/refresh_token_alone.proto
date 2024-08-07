@@ -1,0 +1,21 @@
+
+syntax = "proto3";
+
+package admin.user.v1;
+
+option go_package = "lbck/gen/admin/user/v1;user";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+
+// rpc refresh_token(RefreshTokenRequest)returns(RefreshTokenResponse){option (google.api.http) = {post: "/user/refresh-token",body: "*"};option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) ={summary: "刷新用户token",description: "刷新用户token"};}
+
+message RefreshTokenRequest {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "refresh_token_request" description: "admin.user.refresh_token.refresh_token_request"}};
+}
+
+
+message RefreshTokenResponse {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "refresh_token_response" description: "admin.user.refresh_token.refresh_token_response"}};
+// @gotags: binding:"omitempty" form:"token"
+	string token = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "token" description: ""},(google.api.field_behavior) = OPTIONAL];
+}
+

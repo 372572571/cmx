@@ -1,0 +1,68 @@
+statement_definition:
+    oauth2_clients:
+        statement: |-
+            CREATE TABLE `oauth2_clients` (
+              `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+              `client_id` varchar(100) NOT NULL,
+              `client_secret` varchar(100) NOT NULL,
+              `redirect_uri` text,
+              `privatekey` text,
+              `publickey` text,
+              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `internal_secret` varchar(255) NOT NULL DEFAULT '内部 secret',
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `oauth2_clients_client_id_unique` (`client_id`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='客户端表，用于存储注册的客户端信息。'
+table_definition:
+    oauth2_clients:
+        - column_name: id
+          type: uint64
+          comment: ""
+        - column_name: client_id
+          type: string
+          comment: ""
+        - column_name: client_secret
+          type: string
+          comment: ""
+        - column_name: redirect_uri
+          type: string
+          comment: ""
+        - column_name: privatekey
+          type: string
+          comment: ""
+        - column_name: publickey
+          type: string
+          comment: ""
+        - column_name: created_at
+          type: time.Time
+          comment: ""
+        - column_name: updated_at
+          type: time.Time
+          comment: ""
+        - column_name: internal_secret
+          type: string
+          comment: ""
+message_definition:
+    oauth2_clients:
+        - column_name: id
+          type: uint64
+        - column_name: client_id
+          type: string
+        - column_name: client_secret
+          type: string
+        - column_name: redirect_uri
+          type: string
+        - column_name: privatekey
+          type: string
+        - column_name: publickey
+          type: string
+        - column_name: created_at
+          type: int64
+          serializer: unixtime
+        - column_name: updated_at
+          type: int64
+          serializer: unixtime
+        - column_name: internal_secret
+          type: string
+enums_definition: {}

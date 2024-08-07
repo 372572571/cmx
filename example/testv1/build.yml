@@ -1,0 +1,59 @@
+db_config:
+  host: "mysql.rds.aliyuncs.com"
+  port: "3306"
+  dbname: "dev"
+  user: "username"
+  pwd: "userpass"
+project_path: "/home/lyld/src/git/createmodel/project/test"
+enable_go_null_point: true
+enable_gorm_soft_delete: true
+enable_gorm_tag: true
+# 模型中的proto bigint转string
+enable_big_int_to_string: false
+type_config:
+  output_path: "/home/lyld/src/git/createmodel/project/test/go/types"
+  go_pkg_name: "types"
+
+apis:
+  admin:
+    is_join: false
+    api_yaml_path: "/home/lyld/src/git/createmodel/project/test/admin"
+    proto_config:
+      output_path: "/home/lyld/src/git/createmodel/project/test/proto/admin/${group}/v1"
+      pkg_name: "admin.${group}.v1"
+      go_pkg_name: "lbck/gen/admin/${group}/v1;${group}"
+      import_pkgs:
+        - path: "google/api/field_behavior.proto"
+        - path: "protoc-gen-openapiv2/options/annotations.proto"
+      options_import_pkgs:
+        - path: "incorporate.proto"
+stores_config:
+  is_enable: true
+  stores_name: "incorporate" # incorporate.Xxx subject = 1;
+  proto_config:
+    output_path: "/home/lyld/src/git/createmodel/project/test/proto/incorporate"
+    pkg_name: "incorporate"
+    go_pkg_name: "lbck/gen/incorporate"
+    import_pkgs:
+      - path: "google/api/field_behavior.proto"
+      - path: "protoc-gen-openapiv2/options/annotations.proto"
+repo_config:
+  output_path: "/home/lyld/src/git/createmodel/project/test/go/repo"
+  pkg_name: "newrepo"
+  enable_model_to_proto: false
+  import_pkgs:
+    - path: "context"
+    - path: "gorm.io/gorm"
+    - path: "gorm.io/gorm/clause"
+    - path: "gorm.io/gorm/schema"
+    - path: "gorm.io/gen"
+    - path: "gorm.io/gen/field"
+    - path: "gorm.io/plugin/dbresolver"
+    - path: "gorm.io/plugin/soft_delete"
+      default_ref: "var _ soft_delete.DeletedAt"
+    - path: "time"
+      default_ref: "var _ = time.ANSIC"
+    - path: "github.com/spf13/cast"
+      default_ref: "var _ = cast.StringToDate"
+    - path: "encoding/json"
+      default_ref: "var _ = json.Marshal"

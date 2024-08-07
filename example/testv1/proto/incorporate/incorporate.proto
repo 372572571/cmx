@@ -1,0 +1,170 @@
+syntax = "proto3";
+
+package incorporate;
+
+option go_package = "lbck/gen/incorporate";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+
+/* 
+ Limit $? 
+ Page $? 
+ Total $? 
+*/ 
+message Page {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "page" description: "default.group.page"}};
+// @gotags: binding:"min=1,max=5000" form:"limit"
+	int32 limit = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "一页多少条" description: ""},(google.api.field_behavior) = REQUIRED];
+// @gotags: binding:"gt=0" form:"page"
+	int32 page = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "当前页" description: ""},(google.api.field_behavior) = REQUIRED];
+// @gotags: binding:"omitempty" form:"total"
+	int64 total = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "总数" description: ""},(google.api.field_behavior) = OPTIONAL];
+}
+/* 
+ User $? 
+ UserSubject $? 
+*/ 
+message GeneralUserListItem {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "general_user_list_item" description: "admin.user.general_user_list.general_user_list_item"}};
+// @gotags: binding:"omitempty" form:"user"
+User user = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"user_subject"
+UserSubjects user_subject = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+}
+/* 
+ Id $? 
+ Status $? 
+ Type $? 
+ LuoboId $? 
+ Passwd $? 
+ Name $? 
+ Nickname $? 
+ Mobile $? 
+ Email $? 
+ Avatar $? 
+ Sex $? 
+ RegisterIp $? 
+ IsAuth $? 
+ IsCrowdsourcingAgent $? 
+ PayPasswd $? 
+ Region $? 
+ Birthday $? 
+ LastLoginAt $? 
+ CreatedAt $? 
+ UpdatedAt $? 
+ DeletedAt $? 
+ Score $? 
+ Count $? 
+ DeviceType $? 
+ IsOldPasswd $? 
+ IsOldPayPasswd $? 
+ NewTranNetMemberCode $? 
+*/ 
+message User {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "user" description: "model.user.user"}};
+// @gotags: binding:"omitempty" form:"id"
+	uint64 id = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "用户id" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"status"
+	string status = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "状态,[0:未指定,1:启用,2:禁用,3:临时锁定]" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"type"
+	string type = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "用户类型,[0:未指定,1:个人账号,2:专业用户,3:众包用户,4:个体户]" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"luobo_id"
+	string luobo_id = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "标识符" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"passwd"
+	string passwd = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "密码" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"name"
+	string name = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "姓名" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"nickname"
+	string nickname = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "昵称" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"mobile"
+	string mobile = 8[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "手机号" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"email"
+	string email = 9[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "邮箱" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"avatar"
+	string avatar = 10[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "头像" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"sex"
+	int32 sex = 11[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "性别,[0:未指定,1:男,2:女,3:未知]" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"register_ip"
+	string register_ip = 12[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "注册IP" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"is_auth"
+	string is_auth = 13[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否已认证" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"is_crowdsourcing_agent"
+	int32 is_crowdsourcing_agent = 14[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否是众包主体(仅专业用户可设置)" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"pay_passwd"
+	string pay_passwd = 15[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "交易密码" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"region"
+	string region = 16[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "地区" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"birthday"
+	int64 birthday = 17[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "用户生日" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"last_login_at"
+	int64 last_login_at = 18[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "最后登陆时间" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"created_at"
+	int64 created_at = 19[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"updated_at"
+	int64 updated_at = 20[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"deleted_at"
+	int64 deleted_at = 21[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"score"
+	int64 score = 22[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "用户总评分" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"count"
+	int64 count = 23[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "订单计数" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"device_type"
+	int32 device_type = 24[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "设备类型,[0:未指定,1:Android,2:IOS,3:H5]" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"is_old_passwd"
+	int32 is_old_passwd = 25[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否是旧登陆密码" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"is_old_pay_passwd"
+	int32 is_old_pay_passwd = 26[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否是旧支付密码" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"new_tran_net_member_code"
+	string new_tran_net_member_code = 27[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "平安银行新开户时,用的会员代码(新用户与uid一致,仅注销钱包时会生成一个新的)" description: ""},(google.api.field_behavior) = OPTIONAL];
+}
+/* 
+ Id $? 
+ UserId $? 
+ CompanyName $? 
+ JuridicalPerson $? 
+ IdCard $? 
+ UniformCode $? 
+ Address $? 
+ Capital $? 
+ CreationTime $? 
+ Scopes $? 
+ License $? 
+ Photo $? 
+ Status $? 
+ DeletedAt $? 
+ UpdatedAt $? 
+ CreatedAt $? 
+*/ 
+message UserSubjects {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "user_subjects" description: "model.user_subjects.user_subjects"}};
+// @gotags: binding:"omitempty" form:"id"
+	int64 id = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "自增id" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"user_id"
+	int64 user_id = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "user_id" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"company_name"
+	string company_name = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "公司名称" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"juridical_person"
+	string juridical_person = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "公司法人名称" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"id_card"
+	string id_card = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "身份证号" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"uniform_code"
+	string uniform_code = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "统一信用代码" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"address"
+	string address = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "公司地址" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"capital"
+	int32 capital = 8[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "注册资金" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"creation_time"
+	int64 creation_time = 9[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "公司创建时间" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"scopes"
+	string scopes = 10[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "经营范围" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"license"
+	string license = 11[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "营业执照" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"photo"
+	string photo = 12[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "公司环境" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"status"
+	int32 status = 13[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否当前选择主体[1默认 2选中]" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"deleted_at"
+	int64 deleted_at = 14[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"updated_at"
+	int64 updated_at = 15[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "更新时间" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"created_at"
+	int64 created_at = 16[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+}
+

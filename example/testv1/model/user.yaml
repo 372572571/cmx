@@ -1,0 +1,237 @@
+statement_definition:
+    user:
+        statement: |-
+            CREATE TABLE `user` (
+              `id` bigint(20) unsigned NOT NULL COMMENT '用户id',
+              `status` char(4) NOT NULL DEFAULT '1' COMMENT '状态,[0:未指定,1:启用,2:禁用,3:临时锁定]',
+              `type` varchar(10) NOT NULL DEFAULT '1' COMMENT '用户类型,[0:未指定,1:个人账号,2:专业用户,3:众包用户,4:个体户]',
+              `luobo_id` varchar(50) NOT NULL DEFAULT '' COMMENT '萝卜号',
+              `passwd` varchar(64) NOT NULL DEFAULT '' COMMENT '密码',
+              `name` varchar(50) NOT NULL DEFAULT '' COMMENT '姓名',
+              `nickname` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
+              `mobile` varchar(50) NOT NULL DEFAULT '' COMMENT '手机号',
+              `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+              `avatar` varchar(256) NOT NULL DEFAULT '' COMMENT '头像',
+              `sex` int(10) unsigned NOT NULL DEFAULT '3' COMMENT '性别,[0:未指定,1:男,2:女,3:未知]',
+              `register_ip` varchar(50) NOT NULL DEFAULT '' COMMENT '注册IP',
+              `is_auth` char(1) NOT NULL DEFAULT '0' COMMENT '是否已认证',
+              `is_crowdsourcing_agent` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是众包主体(仅专业用户可设置)',
+              `pay_passwd` varchar(64) NOT NULL DEFAULT '' COMMENT '交易密码',
+              `region` varchar(32) NOT NULL DEFAULT '中国' COMMENT '地区',
+              `birthday` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户生日',
+              `last_login_at` bigint(20) NOT NULL DEFAULT '0' COMMENT '最后登陆时间',
+              `created_at` datetime NOT NULL,
+              `updated_at` datetime NOT NULL,
+              `deleted_at` bigint(20) NOT NULL DEFAULT '0',
+              `score` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户总评分',
+              `count` bigint(20) NOT NULL DEFAULT '0' COMMENT '订单计数',
+              `device_type` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '设备类型,[0:未指定,1:Android,2:IOS,3:H5]',
+              `is_old_passwd` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是旧登陆密码',
+              `is_old_pay_passwd` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否是旧支付密码',
+              `new_tran_net_member_code` varchar(128) NOT NULL DEFAULT '' COMMENT '平安银行新开户时,用的会员代码(新用户与uid一致,仅注销钱包时会生成一个新的)',
+              PRIMARY KEY (`id`) USING BTREE,
+              KEY `user_mobile` (`mobile`) USING BTREE,
+              KEY `idx_user_type` (`type`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户'
+table_definition:
+    user:
+        - column_name: id
+          type: uint64
+          comment: 用户id
+        - column_name: status
+          type: string
+          comment: 状态,[0:未指定,1:启用,2:禁用,3:临时锁定]
+        - column_name: type
+          type: string
+          comment: 用户类型,[0:未指定,1:个人账号,2:专业用户,3:众包用户,4:个体户]
+        - column_name: luobo_id
+          type: string
+          comment: 萝卜号
+        - column_name: passwd
+          type: string
+          comment: 密码
+        - column_name: name
+          type: string
+          comment: 姓名
+        - column_name: nickname
+          type: string
+          comment: 昵称
+        - column_name: mobile
+          type: string
+          comment: 手机号
+        - column_name: email
+          type: string
+          comment: 邮箱
+        - column_name: avatar
+          type: string
+          comment: 头像
+        - column_name: sex
+          type: int
+          comment: 性别,[0:未指定,1:男,2:女,3:未知]
+        - column_name: register_ip
+          type: string
+          comment: 注册IP
+        - column_name: is_auth
+          type: string
+          comment: 是否已认证
+        - column_name: is_crowdsourcing_agent
+          type: int
+          comment: 是否是众包主体(仅专业用户可设置)
+        - column_name: pay_passwd
+          type: string
+          comment: 交易密码
+        - column_name: region
+          type: string
+          comment: 地区
+        - column_name: birthday
+          type: int64
+          comment: 用户生日
+        - column_name: last_login_at
+          type: int64
+          comment: 最后登陆时间
+        - column_name: created_at
+          type: time.Time
+          comment: ""
+        - column_name: updated_at
+          type: time.Time
+          comment: ""
+        - column_name: deleted_at
+          type: soft_delete.DeletedAt
+          comment: ""
+        - column_name: score
+          type: int64
+          comment: 用户总评分
+        - column_name: count
+          type: int64
+          comment: 订单计数
+        - column_name: device_type
+          type: int
+          comment: 设备类型,[0:未指定,1:Android,2:IOS,3:H5]
+        - column_name: is_old_passwd
+          type: int
+          comment: 是否是旧登陆密码
+        - column_name: is_old_pay_passwd
+          type: int
+          comment: 是否是旧支付密码
+        - column_name: new_tran_net_member_code
+          type: string
+          comment: 平安银行新开户时,用的会员代码(新用户与uid一致,仅注销钱包时会生成一个新的)
+message_definition:
+    user:
+        - column_name: id
+          type: uint64
+          comment: 用户id
+        - column_name: status
+          type: string
+          comment: 状态,[0:未指定,1:启用,2:禁用,3:临时锁定]
+        - column_name: type
+          type: string
+          comment: 用户类型,[0:未指定,1:个人账号,2:专业用户,3:众包用户,4:个体户]
+        - column_name: luobo_id
+          type: string
+          comment: 标识符
+        - column_name: passwd
+          type: string
+          comment: 密码
+        - column_name: name
+          type: string
+          comment: 姓名
+        - column_name: nickname
+          type: string
+          comment: 昵称
+        - column_name: mobile
+          type: string
+          comment: 手机号
+        - column_name: email
+          type: string
+          comment: 邮箱
+        - column_name: avatar
+          type: string
+          comment: 头像
+        - column_name: sex
+          type: int32
+          comment: 性别,[0:未指定,1:男,2:女,3:未知]
+        - column_name: register_ip
+          type: string
+          comment: 注册IP
+        - column_name: is_auth
+          type: string
+          comment: 是否已认证
+        - column_name: is_crowdsourcing_agent
+          type: int32
+          comment: 是否是众包主体(仅专业用户可设置)
+        - column_name: pay_passwd
+          type: string
+          comment: 交易密码
+        - column_name: region
+          type: string
+          comment: 地区
+        - column_name: birthday
+          type: int64
+          comment: 用户生日
+        - column_name: last_login_at
+          type: int64
+          comment: 最后登陆时间
+        - column_name: created_at
+          type: int64
+        - column_name: updated_at
+          type: int64
+        - column_name: deleted_at
+          type: int64
+        - column_name: score
+          type: int64
+          comment: 用户总评分
+        - column_name: count
+          type: int64
+          comment: 订单计数
+        - column_name: device_type
+          type: int32
+          comment: 设备类型,[0:未指定,1:Android,2:IOS,3:H5]
+        - column_name: is_old_passwd
+          type: int32
+          comment: 是否是旧登陆密码
+        - column_name: is_old_pay_passwd
+          type: int32
+          comment: 是否是旧支付密码
+        - column_name: new_tran_net_member_code
+          type: string
+          comment: 平安银行新开户时,用的会员代码(新用户与uid一致,仅注销钱包时会生成一个新的)
+enums_definition:
+    status:
+        - key: enable
+          value: "1"
+          desc: 启用
+          zh: 启用
+          en: ""
+        - key: disable
+          value: "2"
+          desc: 禁用
+          zh: 禁用
+          en: ""
+    type:
+        - key: personal
+          value: "1"
+          desc: 个人用户
+          zh: 个人用户
+          en: ""
+        - key: company
+          value: "2"
+          desc: 专业用户
+          zh: 专业用户
+          en: ""
+        - key: crowdsourcing
+          value: "3"
+          desc: 众包用户
+          zh: 众包用户
+          en: ""
+        - key: self_employed
+          value: "4"
+          desc: 个体户
+          zh: 个体户
+          en: ""
+        - key: enterprise
+          value: "5"
+          desc: 企业用户
+          zh: 企业用户
+          en: ""
+

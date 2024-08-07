@@ -1,0 +1,67 @@
+
+syntax = "proto3";
+
+package admin.user.v1;
+
+option go_package = "lbck/gen/admin/user/v1;user";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// lib import 
+import "incorporate.proto";
+
+// rpc general_user_list(GeneralUserListRequest)returns(GeneralUserListResponse){option (google.api.http) = {post: "/v1/user/general-user-list",body: "*"};option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) ={summary: "用户列表",description: "用户列表"};}
+
+/* 
+ PageBreak $? 
+ IsAuth $? 
+ Type $? 
+ Nickname $? 
+ Mobile $? 
+ Name $? 
+ Region $? 
+ RegTimeFrom $? 
+ RegTimeTo $? 
+ LuoboId $? 
+ Status $? 
+ IsApplyUserProduct $? 
+*/ 
+message GeneralUserListRequest {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "general_user_list_request" description: "admin.user.general_user_list.general_user_list_request"}};
+// @gotags: binding:"required" form:"page_break"
+incorporate.Page page_break = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = REQUIRED];
+// @gotags: binding:"omitempty" form:"is_auth"
+string is_auth = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否已认证" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty,dive,oneof=1 2 3 4 5" form:"type"
+repeated string type = 3[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: "有效类型: \n 1: 个人用户 \n 2: 专业用户 \n 3: 众包用户 \n 4: 个体户 \n 5: 企业用户 \n "},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"nickname"
+string nickname = 4[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "昵称" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"mobile"
+string mobile = 5[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "手机号" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"name"
+string name = 6[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "姓名" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"region"
+string region = 7[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "地区" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"reg_time_from"
+	int32 reg_time_from = 8[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "开始" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"reg_time_to"
+	int32 reg_time_to = 9[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "结束" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty" form:"luobo_id"
+string luobo_id = 10[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "标识符" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty,dive,oneof=1 2" form:"status"
+repeated string status = 11[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: "有效类型: \n 1: 启用 \n 2: 禁用 \n "},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"omitempty,oneof=1 0" form:"isApplyUserProduct"
+	int32 isApplyUserProduct = 12[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "是否查看用户需要审批的产品" description: "有效类型: \n 1: true \n 0: false \n "},(google.api.field_behavior) = OPTIONAL];
+}
+
+
+/* 
+ User $? 
+ PageBreak $? 
+*/ 
+message GeneralUserListResponse {option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {json_schema: {title: "general_user_list_response" description: "admin.user.general_user_list.general_user_list_response"}};
+// @gotags: binding:"omitempty" form:"user"
+repeated incorporate.GeneralUserListItem user = 1[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = OPTIONAL];
+// @gotags: binding:"required" form:"page_break"
+incorporate.Page page_break = 2[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={title: "" description: ""},(google.api.field_behavior) = REQUIRED];
+}
+

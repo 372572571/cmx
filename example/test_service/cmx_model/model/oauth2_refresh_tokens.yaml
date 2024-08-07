@@ -1,0 +1,56 @@
+statement_definition:
+    oauth2_refresh_tokens:
+        statement: |-
+            CREATE TABLE `oauth2_refresh_tokens` (
+              `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+              `client_id` varchar(100) NOT NULL,
+              `user_id` bigint unsigned NOT NULL,
+              `refresh_token` varchar(512) NOT NULL,
+              `expires_in` bigint unsigned NOT NULL,
+              `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`id`) USING BTREE,
+              UNIQUE KEY `oauth2_refresh_tokens_refresh_token_unique` (`refresh_token`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='刷新令牌表，用于存储刷新令牌信息。'
+table_definition:
+    oauth2_refresh_tokens:
+        - column_name: id
+          type: uint64
+          comment: ""
+        - column_name: client_id
+          type: string
+          comment: ""
+        - column_name: user_id
+          type: uint64
+          comment: ""
+        - column_name: refresh_token
+          type: string
+          comment: ""
+        - column_name: expires_in
+          type: uint64
+          comment: ""
+        - column_name: created_at
+          type: time.Time
+          comment: ""
+        - column_name: updated_at
+          type: time.Time
+          comment: ""
+message_definition:
+    oauth2_refresh_tokens:
+        - column_name: id
+          type: uint64
+        - column_name: client_id
+          type: string
+        - column_name: user_id
+          type: uint64
+        - column_name: refresh_token
+          type: string
+        - column_name: expires_in
+          type: uint64
+        - column_name: created_at
+          type: int64
+          serializer: unixtime
+        - column_name: updated_at
+          type: int64
+          serializer: unixtime
+enums_definition: {}

@@ -1,0 +1,106 @@
+# 枚举定义
+enums_definition:
+  auth:
+    - key: authorization_code
+      value: 1
+      desc: 授权码
+      zh: 授权码
+    - key: refresh_token
+      value: 2
+      desc: 刷新token
+      zh: 刷新token
+  boolean:
+    - key: T
+      value: 1
+      desc: "true"
+      zh: "true"
+    - key: F
+      value: 0
+      desc: "false"
+      zh: "false"
+  switch:
+    - key: "on"
+      value: 1
+      desc: "开启"
+    - key: "off"
+      value: 0
+      desc: "关闭"
+      zh: "关闭"
+  curd:
+    - key: "create"
+      value: 1
+      desc: "新增"
+      zh: "新增"
+    - key: "update"
+      value: 2
+      desc: "更新"
+      zh: "更新"
+    - key: "delete"
+      value: 3
+      desc: "删除"
+      zh: "删除"
+    - key: "read"
+      value: 4
+      desc: "查询"
+      zh: "查询"
+
+message_definition:
+  position:
+    - column_name: latitude
+      type: string
+      inhibit: required
+      validator: required,latitude
+      comment: "纬度"
+    - column_name: longitude
+      type: string
+      inhibit: required
+      validator: required,longitude
+      comment: "经度"
+    - column_name: distance
+      type: string
+      validator: omitempty,numeric
+      comment: "经度"
+  group:
+    - column_name: curd
+      type: string
+      oneof:
+        ref: default.group.curd
+        select: ["*"]
+        is_key: false
+      inhibit: required
+      validator: required,${oneof}
+  status:
+    - column_name: coed
+      type: string
+    - column_name: detail
+      type: string
+  send_limit:
+    - column_name: count
+      type: int32
+      comment: "限制次数"
+    - column_name: period
+      type: int32
+      comment: "限制周期"
+    - column_name: last_time
+      type: string
+      comment: "最后一次发送时间"
+    - column_name: sended_count
+      type: int32
+      comment: "已发送次数"
+    - column_name: wait_time
+      type: int32
+      comment: "等待时间"
+  page:
+    - column_name: limit
+      type: int32
+      validator: min=1,max=5000
+      inhibit: required
+      comment: "一页多少条"
+    - column_name: page
+      type: int32
+      validator: gt=0
+      inhibit: required
+      comment: "当前页"
+    - column_name: total
+      type: int64
+      comment: "总数"

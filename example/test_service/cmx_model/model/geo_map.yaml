@@ -1,0 +1,53 @@
+statement_definition:
+    geo_map:
+        statement: |-
+            CREATE TABLE `geo_map` (
+              `id` varchar(50) NOT NULL,
+              `pid` varchar(250) NOT NULL,
+              `deep` varchar(250) NOT NULL,
+              `name` varchar(250) NOT NULL,
+              `ext_path` varchar(255) NOT NULL,
+              `geo` geometry NOT NULL,
+              `polygon` geometry NOT NULL,
+              PRIMARY KEY (`id`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+table_definition:
+    geo_map:
+        - column_name: id
+          type: string
+          comment: ""
+        - column_name: pid
+          type: string
+          comment: ""
+        - column_name: deep
+          type: string
+          comment: ""
+        - column_name: name
+          type: string
+          comment: ""
+        - column_name: ext_path
+          type: string
+          comment: ""
+        - column_name: geo
+          type: string
+          comment: ""
+        - column_name: polygon
+          type: string
+          comment: ""
+message_definition:
+    geo_map:
+        - column_name: id
+          type: string
+        - column_name: pid
+          type: string
+        - column_name: deep
+          type: string
+        - column_name: name
+          type: string
+        - column_name: ext_path
+          type: string
+        - column_name: geo
+          type: string
+        - column_name: polygon
+          type: string
+enums_definition: {}

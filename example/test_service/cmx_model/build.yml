@@ -1,0 +1,59 @@
+db_config:
+  host: "172.16.5.7"
+  port: "3306"
+  dbname: "auth"
+  user: "root"
+  pwd: "didi85223jsf"
+project_path: "cmx_model"
+enable_go_null_point: true
+enable_gorm_soft_delete: true
+enable_gorm_serializer: true
+enable_gorm_tag: true
+enable_big_int_to_string: false
+type_config:
+  output_path: "logic/types"
+  go_pkg_name: "types"
+repo_config:
+  output_path: "logic/repo"
+  pkg_name: "repo"
+  import_pkgs:
+    - path: "context"
+    - path: "gorm.io/gorm"
+    - path: "gorm.io/gorm/clause"
+    - path: "gorm.io/gorm/schema"
+    - path: "gorm.io/gen"
+    - path: "gorm.io/gen/field"
+    - path: "gorm.io/plugin/dbresolver"
+    - path: "gorm.io/plugin/soft_delete"
+      default_ref: "var _ soft_delete.DeletedAt"
+    - path: "time"
+      default_ref: "var _ = time.ANSIC"
+    - path: "github.com/spf13/cast"
+      default_ref: "var _ = cast.StringToDate"
+    - path: "encoding/json"
+      default_ref: "var _ = json.Marshal"
+apis:
+  admin:
+    is_join: false
+    api_yaml_path: ".model/admin"
+    proto_config:
+      output_path: "proto/apis-admin/admin/${group}/v1"
+      pkg_name: "admin.${group}.v1"
+      go_pkg_name: "test_service/gen/admin/${group}/v1;${group}"
+      import_pkgs:
+        - path: "google/api/field_behavior.proto"
+        - path: "protoc-gen-openapiv2/options/annotations.proto"
+      options_import_pkgs:
+        - path: "incorporate.proto"
+  app:
+    is_join: false
+    api_yaml_path: ".model/app"
+    proto_config:
+      output_path: "proto/apis-app/app/${group}/v1"
+      pkg_name: "app.${group}.v1"
+      go_pkg_name: "test_service/gen/app/${group}/v1;${group}"
+      import_pkgs:
+        - path: "google/api/field_behavior.proto"
+        - path: "protoc-gen-openapiv2/options/annotations.proto"
+      options_import_pkgs:
+        - path: "incorporate.proto"
