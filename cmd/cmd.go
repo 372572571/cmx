@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cmx/pkg/config"
+	config "cmx/v1/logic/aggregate/build_config"
 
 	"github.com/spf13/cobra"
 )
@@ -37,4 +37,6 @@ func init() {
 	rootCmd.AddCommand(addApiCmd)
 	rootCmd.AddCommand(createMsgCmd)
 	rootCmd.AddCommand(initLocalCmd)
+
+	rootCmd.AddCommand(versionCmd)
 }

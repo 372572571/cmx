@@ -5,6 +5,7 @@ import (
 	"cmx/pkg/config/definition"
 	"cmx/pkg/util"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -140,10 +141,10 @@ func (m *Message) writerTypeMessage(v definition.MessageField, idx int) string {
 		// rw.WriteString("\n")
 		rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
 		// rw.WriteString("\n")
-		rw.WriteString(fmt.Sprintf(`title: "%s"`, strings.ReplaceAll(v.Comment, `"`, " ")))
+		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(v.Comment)))
 		// rw.WriteString("\n")
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: "%s"`, v.DetailComment+m.Definition.GetEnumComment(v.OneOf)))
+		rw.WriteString(fmt.Sprintf(`description: %s`, strconv.Quote(v.DetailComment+m.Definition.GetEnumComment(v.OneOf))))
 		// rw.WriteString("\n")
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
@@ -160,7 +161,7 @@ func (m *Message) writerTypeMessage(v definition.MessageField, idx int) string {
 func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 	rw := strings.Builder{}
 
-	commentTag := strings.ReplaceAll(v.Comment, `"`, " ") + v.DetailComment + m.Definition.GetEnumComment(v.OneOf)
+	commentTag := strconv.Quote(v.Comment) + v.DetailComment + m.Definition.GetEnumComment(v.OneOf)
 	rw.WriteString(m.Tag(v.ColumnName, v.Validator, v.OneOf, commentTag, v.Serializer))
 	rw.WriteString("\n")
 
@@ -174,9 +175,9 @@ func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 	rw.WriteString(rf)
 	// rw.WriteString("\n")
 	rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
-	rw.WriteString(fmt.Sprintf(`title: "%s"`, strings.ReplaceAll(v.Comment, `"`, " ")))
+	rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(v.Comment)))
 	rw.WriteString(" ")
-	rw.WriteString(fmt.Sprintf(`description: "%s"`, v.DetailComment+m.Definition.GetEnumComment(v.OneOf)))
+	rw.WriteString(fmt.Sprintf(`description: %s`, strconv.Quote((v.DetailComment + m.Definition.GetEnumComment(v.OneOf)))))
 	// rw.WriteString("\n")
 	rw.WriteString("}")
 	m.fieldBehavior(&rw, v.Inhibit)
@@ -189,8 +190,8 @@ func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 func (m Message) writerTypeField(v definition.MessageField, idx int) string {
 	rw := strings.Builder{}
 	if tf, found := m.Definition.GetTableField(v.Ref.Ref); found {
-		commentTag := fmt.Sprintf("%s %s %s", strings.ReplaceAll(tf.Comment, `"`, " "),
-			v.DetailComment,
+		commentTag := fmt.Sprintf("%s %s %s", strconv.Quote(tf.Comment),
+			strconv.Quote(v.DetailComment),
 			m.Definition.GetEnumComment(tf.OneOf))
 		rw.WriteString(m.Tag(v.ColumnName, tf.Validator, tf.OneOf, commentTag, v.Serializer))
 		rw.WriteString("\n")
@@ -204,11 +205,11 @@ func (m Message) writerTypeField(v definition.MessageField, idx int) string {
 		rw.WriteString(rf)
 		rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
 		// rw.WriteString("\n")
-		rw.WriteString(fmt.Sprintf(`title: "%s"`, strings.ReplaceAll(tf.Comment, `"`, " ")))
+		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(tf.Comment)))
 		// rw.WriteString("\n")
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: "%s"`, tf.DetailComment+
-			m.Definition.GetEnumComment(tf.OneOf)))
+		rw.WriteString(fmt.Sprintf(`description: "%s"`,
+			strconv.Quote(tf.DetailComment+m.Definition.GetEnumComment(tf.OneOf))))
 		// rw.WriteString("\n")
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
@@ -249,7 +250,7 @@ func (m Message) writerTypeMessageField(v definition.MessageField, idx int) stri
 		}
 		rw.WriteString("\n")
 		rf := fmt.Sprintf("%s %s = %d", tf.Type, v.ColumnName, idx)
-		if v.Array {
+		if v.Array || tf.Array {
 			rf = fmt.Sprintf("repeated %s %s = %d", tf.Type, v.ColumnName, idx)
 		}
 		if v.Optional {
@@ -261,10 +262,11 @@ func (m Message) writerTypeMessageField(v definition.MessageField, idx int) stri
 		// }
 		rw.WriteString(rf)
 		rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
-		rw.WriteString(fmt.Sprintf(`title: "%s"`, strings.ReplaceAll(tf.Comment, `"`, " ")))
+		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(tf.Comment)))
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: "%s"`, tf.DetailComment+
-			m.Definition.GetEnumComment(tf.OneOf)))
+		rw.WriteString(fmt.Sprintf(`description: %s`,
+			strconv.Quote(
+				tf.DetailComment+m.Definition.GetEnumComment(tf.OneOf))))
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
 		rw.WriteString("];")
@@ -305,8 +307,11 @@ func (m Message) parserValidator(validator string, foo definition.FieldOneOf) (r
 
 func (m Message) Tag(col, validator string, foo definition.FieldOneOf, comment, serializer string) string {
 	rw := strings.Builder{}
+	// if comment != "" {
+	// 	comment = fmt.Sprintf(`%s`, strconv.Quote(comment))
+	// }
 	if validator, found := m.parserValidator(validator, foo); found {
-		rw.WriteString(fmt.Sprintf(`// @gotags: binding:"%s" form:"%s" comment:"%s"`, validator, col, comment))
+		rw.WriteString(fmt.Sprintf(`// @gotags: binding:"%s" form:"%s" comment:%s`, validator, col, comment))
 		if serializer != "" {
 			// https://gorm.io/docs/serializer.html
 			// gorm:"serializer:unixtime"

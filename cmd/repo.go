@@ -1,9 +1,11 @@
 package cmd
 
 import (
-	"cmx/echo/echo_repo"
-	"cmx/pkg/config"
-	"cmx/pkg/util"
+	config "cmx/v1/logic/aggregate/build_config"
+	"cmx/v1/logic/inside/echo/echo_repo"
+	"cmx/v1/logic/util"
+	"cmx/v1/pkg/logger"
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -30,19 +32,22 @@ func repo() {
 		panic(err)
 	}
 	link := []string{}
-	util.NoError(yaml.Unmarshal(linkBuf, &link))
-
+	err = yaml.Unmarshal(linkBuf, &link)
+	if err != nil {
+		logger.Fatalf(context.Background(),"unmarshal link.conf error: %s", err.Error())
+	}
 	// definition := config.GetDefaultConfig().GetDefinition()
 	for _, v := range link {
 		mr := fmt.Sprintf("model.%s.%s", v, v)
-		repoInfo := util.MustSucc(echo_repo.Generated(mr))
-		fmt.Printf("write path: %s model: %s.go\n", config.GetDefaultConfig().RepoConfig.OutputPath, v)
+		logger.Infof(context.Background(),"generate model: %s\n", mr)
+		repoInfo := util.MustSuccess(echo_repo.Generated(mr))
+		logger.Infof(context.Background(),"write path: %s model: %s.go\n", config.GetDefaultConfig().RepoConfig.OutputPath, v)
 		err = os.WriteFile(
 			path.Join(config.GetDefaultConfig().RepoConfig.OutputPath, v+".go"),
 			repoInfo, os.ModePerm,
 		)
 		if err != nil {
-			panic(err)
+			logger.Fatalf(context.Background(), "write file error: %s", err.Error())
 		}
 	}
 }
