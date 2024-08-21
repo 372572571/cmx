@@ -9,4 +9,6 @@ type ApiMessage struct {
 	IsCommentedOutputOnly bool
 	IsUnmixed             bool // 是否不包含外部message
 	Name                  string
+	BuildString           string
+	ApiSubPath            string
 }

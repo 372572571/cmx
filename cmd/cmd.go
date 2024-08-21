@@ -37,4 +37,6 @@ func init() {
 	rootCmd.AddCommand(addApiCmd)
 	rootCmd.AddCommand(createMsgCmd)
 	rootCmd.AddCommand(initLocalCmd)
+
+	rootCmd.AddCommand(versionCmd)
 }

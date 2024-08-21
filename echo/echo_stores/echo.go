@@ -95,8 +95,18 @@ func ApiIncorporateReferences(cfg config.Config) string {
 			}
 		}
 	}
-
-	references := lo.Uniq(cfg.StoresConfig.ForceReference)
+	var references = []string{}
+	// fmt.Printf("cfg.StoresConfig.ForceReferenceFile : %s \n", cfg.StoresConfig.ForceReferenceFile)
+	if cfg.StoresConfig.ForceReferenceFile != "" &&
+		util.IsHaveFile(cfg.StoresConfig.ForceReferenceFile) {
+		buf, err := os.ReadFile(cfg.StoresConfig.ForceReferenceFile)
+		util.NoError(err)
+		err = yaml.Unmarshal(buf, &references)
+		util.NoError(err)
+		// fmt.Printf("force reference file: %s \n", cfg.StoresConfig.ForceReferenceFile)
+		// fmt.Printf("force reference file: %v \n", references)
+	}
+	references = lo.Uniq(append(cfg.StoresConfig.ForceReference, references...))
 	for _, v := range parameters {
 		references = append(references, getMessageReferences(v, cfg)...)
 	}

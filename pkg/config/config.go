@@ -70,10 +70,11 @@ type ApiConfig struct {
 }
 
 type StoresConfig struct {
-	IsEnable       bool        `json:"is_enable" yaml:"is_enable"`
-	StoresName     string      `json:"stores_name" yaml:"stores_name"`
-	ForceReference []string    `json:"force_reference" yaml:"force_reference"`
-	ProtoConfig    ProtoConfig `json:"proto_config" yaml:"proto_config"`
+	IsEnable           bool        `json:"is_enable" yaml:"is_enable"`
+	StoresName         string      `json:"stores_name" yaml:"stores_name"`
+	ForceReference     []string    `json:"force_reference" yaml:"force_reference"`
+	ForceReferenceFile string      `json:"force_reference_file" yaml:"force_reference_file"`
+	ProtoConfig        ProtoConfig `json:"proto_config" yaml:"proto_config"`
 }
 
 type DataBaseConfig struct {
@@ -90,7 +91,10 @@ type ImportPkg struct {
 }
 
 func InitDefaultConfigYaml(file string, projectDir string) {
-	cfg_str := util.MustSucc(os.ReadFile(file))
+	cfg_str, err := os.ReadFile(file)
+	if err != nil {
+		return
+	}
 	util.NoError(yaml.Unmarshal([]byte(cfg_str), &defaultConfig))
 	if projectDir != "" {
 		defaultConfig.ProjectPath = path.Join(projectDir, defaultConfig.ProjectPath)
@@ -98,6 +102,9 @@ func InitDefaultConfigYaml(file string, projectDir string) {
 		defaultConfig.ModelConfig.OutputPath = path.Join(projectDir, defaultConfig.ModelConfig.OutputPath)
 		defaultConfig.StoresConfig.ProtoConfig.OutputPath = path.Join(projectDir, defaultConfig.StoresConfig.ProtoConfig.OutputPath)
 		defaultConfig.RepoConfig.OutputPath = path.Join(projectDir, defaultConfig.RepoConfig.OutputPath)
+		if defaultConfig.StoresConfig.ForceReferenceFile != "" {
+			defaultConfig.StoresConfig.ForceReferenceFile = path.Join(defaultConfig.ProjectPath, defaultConfig.StoresConfig.ForceReferenceFile)
+		}
 		for k, v := range defaultConfig.Apis {
 			_ = v
 			api := defaultConfig.Apis[k]

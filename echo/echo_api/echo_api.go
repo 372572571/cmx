@@ -4,7 +4,6 @@ import (
 	"cmx/echo/echo_message"
 	"cmx/pkg/config"
 	_ "embed"
-	"fmt"
 	"strings"
 	"text/template"
 
@@ -49,8 +48,8 @@ func GeneratedGroup(group string) (string, error) {
 	return nsb.String(), err
 }
 
-func Generated(group string) (b map[string]string, err error) {
-	b = map[string]string{}
+func Generated(group string) (resultMap map[string]ApiMessage, err error) {
+	resultMap = map[string]ApiMessage{}
 	ECHO_TPL = template.Must(template.New("echo_api").
 		Funcs(templateFunc).
 		Parse(echov2_tpl))
@@ -62,12 +61,12 @@ func Generated(group string) (b map[string]string, err error) {
 		api.ApiMessage = v
 		err = ECHO_TPL.Execute(&sb, api)
 		if err != nil {
-			return b, err
+			return nil, err
 		}
-		b[k] = fmt.Sprintf("%s\n%s", b[k], sb.String())
+		v.BuildString = sb.String()
+		resultMap[k] = v
 	}
-
-	return b, err
+	return resultMap, err
 }
 
 // proto template func
@@ -88,8 +87,15 @@ func getProtoPkgName(api Api) string {
 // output proto go pkg name
 func protoGoPkgName(api Api) string {
 	cfg := config.GetDefaultConfig()
-	return strings.ReplaceAll(
+	result := strings.ReplaceAll(
 		cfg.Apis[cfg.SelectApi].ProtoConfig.GoPkgName, "${group}", api.Group)
+	if api.ApiMessage.ApiSubPath == "" {
+		result = strings.ReplaceAll(result, "/${subpath}", "")
+	} else {
+		result = strings.ReplaceAll(result, "${subpath}", api.ApiMessage.ApiSubPath)
+	}
+	return result
+
 }
 
 // output reference import path
@@ -130,7 +136,7 @@ func writeStandAloneApiV2(api Api) map[string]ApiMessage {
 		apiSb.WriteString(api.WriteApi(v))
 		// apiSb.WriteString("*/")
 		itemApiMessage.ApiContent = apiSb.String()
-
+		itemApiMessage.ApiSubPath = v.SubPath
 		requestSb := strings.Builder{}
 		request := echo_message.NewMessage(
 			*definition,

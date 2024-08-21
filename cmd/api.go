@@ -49,15 +49,24 @@ func apiAlone(groups []string, cfg config.Config) {
 		if err != nil {
 			panic(err)
 		}
-		outPath := strings.ReplaceAll(cfg.Apis[cfg.SelectApi].ProtoConfig.OutputPath, "${group}", v)
-		os.MkdirAll(outPath, os.ModePerm)
+
 		// alone echo
 		for kk, vv := range bus {
+			outPath := strings.ReplaceAll(cfg.Apis[cfg.SelectApi].ProtoConfig.OutputPath, "${group}", v)
+			if vv.ApiSubPath != "" {
+				outPath = strings.ReplaceAll(outPath, "${subpath}", vv.ApiSubPath)
+			} else {
+				outPath = strings.ReplaceAll(outPath, "/${subpath}", "")
+			}
+			// 判断路径下的目录是否存在
+			os.MkdirAll(outPath, os.ModePerm)
+			outfilePath := path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone"))
+			// 子目录处理
 			err = os.WriteFile(
-				path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone")),
-				[]byte(vv), os.ModePerm,
+				outfilePath,
+				[]byte(vv.BuildString), os.ModePerm,
 			)
-			fmt.Println(path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone")))
+			fmt.Println(path.Join(outfilePath, fmt.Sprintf("%s.proto", kk+"_alone")))
 			if err != nil {
 				panic(err)
 			}

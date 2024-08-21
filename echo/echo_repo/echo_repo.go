@@ -115,7 +115,7 @@ func getOneofDefinition(m *parse.Model) string {
 	if !ok {
 		panic(fmt.Errorf("not found \n%s", util.MustSucc(yaml.Marshal(tp.Definition))))
 	}
-	
+
 	result := lo.Filter(dm, func(i definition.Field, idx int) bool {
 		return i.OneOf.Ref != ""
 	})

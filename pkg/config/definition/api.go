@@ -60,18 +60,20 @@ const (
 )
 
 type Api struct {
-	Name string `json:"name" yaml:"name"`
-	Http struct {
+	Name    string `json:"name" yaml:"name"`
+	SubPath string `json:"sub_path" yaml:"sub_path"`
+	Http    struct {
 		IsOpenApi bool   `json:"is_open_api" yaml:"is_open_api"`
 		Method    string `json:"method" yaml:"method"`
 		Path      string `json:"path" yaml:"path"`
 		Body      string `json:"body" yaml:"body"`
 		Summary   string `json:"summary" yaml:"summary"`
 	} `json:"http" yaml:"http"`
-	Request     string   `json:"request" yaml:"request"`
-	Response    string   `json:"response" yaml:"response"`
-	SignType    SignType `json:"sign_type" yaml:"sign_type"`
-	Description string   `json:"description" yaml:"description"`
+	Request     string    `json:"request" yaml:"request"`
+	Response    string    `json:"response" yaml:"response"`
+	SignType    SignType  `json:"sign_type" yaml:"sign_type"`
+	Description string    `json:"description" yaml:"description"`
+	Tags        *[]string `json:"tags,omitempty" yaml:"tags,omitempty"`
 }
 
 func (e *Apidefinition) addCache() {

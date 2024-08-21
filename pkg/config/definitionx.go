@@ -4,6 +4,7 @@ import (
 	"cmx/pkg/config/definition"
 	"fmt"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/samber/lo"
@@ -227,14 +228,14 @@ func (df *Definition) GetEnumComment(foo definition.FieldOneOf) string {
 		return ""
 	}
 	comment := strings.Builder{}
-	comment.WriteString("有效类型: \\n ")
+	comment.WriteString("有效类型: ")
 	if foo.IsKey {
 		for _, v := range list {
 			desc := v.Zh
 			if desc == "" {
 				desc = v.Desc
 			}
-			comment.WriteString(fmt.Sprintf("%s: %s \\n ", v.Key, desc))
+			comment.WriteString(fmt.Sprintf("%s: %s ", v.Key, desc))
 		}
 	} else {
 		for _, v := range list {
@@ -242,11 +243,10 @@ func (df *Definition) GetEnumComment(foo definition.FieldOneOf) string {
 			if desc == "" {
 				desc = v.Desc
 			}
-			comment.WriteString(fmt.Sprintf("%s: %s \\n ", v.Value, desc))
+			comment.WriteString(fmt.Sprintf("%s: %s ", v.Value, desc))
 		}
 	}
-
-	return comment.String()
+	return strconv.Quote(comment.String())
 }
 
 // ! --- api---
