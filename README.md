@@ -181,7 +181,6 @@ logic
 
 # 创建对应模型的sql create 语句
 touch cmx_model/local/user.sql
-
 CREATE TABLE `user` (
     `id` bigint unsigned NOT NULL COMMENT '用户ID',
     `type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '1' COMMENT '用户类型',

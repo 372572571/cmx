@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"cmx/pkg/config"
-	"cmx/pkg/config/definition"
-	"cmx/pkg/util"
+	config "cmx/v1/logic/aggregate/build_config"
+	"cmx/v1/logic/util"
+
+	message_model "cmx/v1/logic/model/message"
 	"fmt"
 	"log"
 	"os"
@@ -30,10 +31,10 @@ var createMsgQuestions = []*survey.Question{
 		Prompt: &survey.Select{
 			Message: "select message type",
 			Options: []string{
-				string(definition.RefTypeMessageField),
-				string(definition.RefTypeMessage),
+				string(message_model.RefTypeMessageField),
+				string(message_model.RefTypeMessage),
 			},
-			Default: string(definition.RefTypeMessageField),
+			Default: string(message_model.RefTypeMessageField),
 		},
 	},
 	{
@@ -55,8 +56,8 @@ type createMsgAnswers struct {
 	Message     string
 	Type        string `survey:"select_message_type"`
 	Ref         string
-	Tips        []definition.MessageField
-	Field       []definition.MessageField
+	Tips        []message_model.MessageField
+	Field       []message_model.MessageField
 	Interaction bool
 	OutPath     string
 }
@@ -67,8 +68,8 @@ var createMsgCmd = &cobra.Command{
 		answers := createMsgAnswers{}
 		// 确认消息名称
 		survey.AskOne(createMsgGetNameSteps[0].Prompt, &answers.Message)
-		msgData := map[string][]definition.MessageField{}
-		msgData[answers.Message] = []definition.MessageField{}
+		msgData := map[string][]message_model.MessageField{}
+		msgData[answers.Message] = []message_model.MessageField{}
 		// 添加字段选择
 		answers.Interaction = true
 		for answers.Interaction {
@@ -78,10 +79,10 @@ var createMsgCmd = &cobra.Command{
 				createMsgQuestions[0],
 				createMsgQuestions[1]),
 				&answers)
-			switch definition.MessageReferenceType(answers.Type) {
-			case definition.RefTypeMessageField:
+			switch message_model.MessageReferenceType(answers.Type) {
+			case message_model.RefTypeMessageField:
 				answers.TipMessagesField(answers.Ref)
-			case definition.RefTypeMessage:
+			case message_model.RefTypeMessage:
 				answers.TipMessages(answers.Ref)
 			default:
 				panic(fmt.Errorf("not support type: %s", answers.Type))
@@ -98,7 +99,7 @@ var createMsgCmd = &cobra.Command{
 		if answers.OutPath == "" {
 			fmt.Println(string(text))
 		} else {
-			out := util.MustSucc(
+			out := util.MustSuccess(
 				os.OpenFile(answers.OutPath, os.O_CREATE|os.O_WRONLY, 0666),
 			)
 			// defer out.Close()
@@ -120,8 +121,8 @@ func (cm *createMsgAnswers) TipMessages(ref string) (success bool) {
 
 	for _, item := range values {
 		item := fmt.Sprintf(
-			"col: %s array: %t one_of: %v desc %s %s",
-			item.ColumnName, item.Array, item.OneOf.Select, item.Comment, item.DetailComment)
+			"col: %s array: %t one_of: %v desc %s",
+			item.ColumnName, item.Array, item.OneOf.Select, item.Comment)
 		content = append(content, item)
 	}
 	tip := &survey.Confirm{
@@ -130,10 +131,10 @@ func (cm *createMsgAnswers) TipMessages(ref string) (success bool) {
 	cf := false
 	survey.AskOne(tip, &cf)
 	if cf {
-		cm.Field = append(cm.Field, definition.MessageField{
+		cm.Field = append(cm.Field, message_model.MessageField{
 			ColumnName: reference.Field,
-			Ref: definition.MessageReference{
-				Type: definition.RefTypeMessage,
+			Ref: message_model.MessageReference{
+				Type: message_model.RefTypeMessage,
 				Ref:  ref,
 			},
 		})
@@ -148,11 +149,11 @@ func (cm *createMsgAnswers) TipMessagesField(
 	if !is || len(values) == 0 {
 		return
 	}
-	content := map[string]definition.MessageField{}
-	lo.ForEach(values, func(item definition.MessageField, index int) {
+	content := map[string]message_model.MessageField{}
+	lo.ForEach(values, func(item message_model.MessageField, index int) {
 		in := fmt.Sprintf(
-			"col: %s array: %t one_of: %v desc %s %s",
-			item.ColumnName, item.Array, item.OneOf.Select, item.Comment, item.DetailComment)
+			"col: %s array: %t one_of: %v desc %s",
+			item.ColumnName, item.Array, item.OneOf.Select, item.Comment)
 		content[in] = item
 	})
 	tip := &survey.MultiSelect{
@@ -162,11 +163,11 @@ func (cm *createMsgAnswers) TipMessagesField(
 	selects := []string{}
 	survey.AskOne(tip, &selects)
 	lo.ForEach(selects, func(item string, index int) {
-		cm.Field = append(cm.Field, definition.MessageField{
+		cm.Field = append(cm.Field, message_model.MessageField{
 			ColumnName: content[item].ColumnName,
 			Array:      content[item].Array,
-			Ref: definition.MessageReference{
-				Type:   definition.RefTypeMessageField,
+			Ref: message_model.MessageReference{
+				Type:   message_model.RefTypeMessageField,
 				Ref:    ref,
 				Select: []string{content[item].ColumnName},
 			},

@@ -1,9 +1,12 @@
 package cmd
 
 import (
-	"cmx/echo/echo_api"
-	"cmx/echo/echo_stores"
-	"cmx/pkg/config"
+	config "cmx/v1/logic/aggregate/build_config"
+	"cmx/v1/logic/inside/echo/echo_api"
+	"cmx/v1/logic/inside/echo/echo_stores"
+
+	"cmx/v1/pkg/logger"
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -49,17 +52,28 @@ func apiAlone(groups []string, cfg config.Config) {
 		if err != nil {
 			panic(err)
 		}
-		outPath := strings.ReplaceAll(cfg.Apis[cfg.SelectApi].ProtoConfig.OutputPath, "${group}", v)
-		os.MkdirAll(outPath, os.ModePerm)
+
 		// alone echo
 		for kk, vv := range bus {
+			outPath := strings.ReplaceAll(cfg.Apis[cfg.SelectApi].ProtoConfig.OutputPath, "${group}", v)
+			if vv.ApiSubPath != "" {
+				outPath = strings.ReplaceAll(outPath, "${subpath}", vv.ApiSubPath)
+			} else {
+				outPath = strings.ReplaceAll(outPath, "/${subpath}", "")
+			}
+
+			// 判断路径下的目录是否存在
+			os.MkdirAll(outPath, os.ModePerm)
+
+			outfilePath := path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone"))
+			// 子目录处理
 			err = os.WriteFile(
-				path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone")),
-				[]byte(vv), os.ModePerm,
+				outfilePath,
+				[]byte(vv.BuildString), os.ModePerm,
 			)
-			fmt.Println(path.Join(outPath, fmt.Sprintf("%s.proto", kk+"_alone")))
+			fmt.Println(path.Join(outfilePath, fmt.Sprintf("%s.proto", kk+"_alone")))
 			if err != nil {
-				panic(err)
+				logger.Fatalf(context.Background(), "write file error: %s %s", err.Error(), outPath)
 			}
 		}
 	}
@@ -80,7 +94,7 @@ func ApiJoin(groups []string, cfg config.Config) {
 		)
 		fmt.Println(path.Join(outPath, fmt.Sprintf("%s.proto", v+"_join")))
 		if err != nil {
-			panic(err)
+			logger.Fatalf(context.Background(), "write file error: %s", err.Error())
 		}
 	}
 }
@@ -89,7 +103,7 @@ func ApiJoin(groups []string, cfg config.Config) {
 func stores(cfg config.Config) {
 	str, err := echo_stores.Generated(cfg)
 	if err != nil {
-		panic(err)
+		logger.Fatalf(context.Background(), "generate stores error: %s", err.Error())
 	}
 	storesConfig := cfg.StoresConfig
 	outPath := path.Join(storesConfig.ProtoConfig.OutputPath)
@@ -99,6 +113,6 @@ func stores(cfg config.Config) {
 		[]byte(str), os.ModePerm,
 	)
 	if err != nil {
-		panic(err)
+		logger.Fatalf(context.Background(), "write file error: %s", err.Error())
 	}
 }

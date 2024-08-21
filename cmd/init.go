@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"cmx/echo/echo_init"
-	"cmx/echo/echo_init/data_source"
-	"cmx/pkg/config"
+	config "cmx/v1/logic/aggregate/build_config"
+	"cmx/v1/logic/inside/echo/echo_init"
+	"cmx/v1/logic/inside/echo/echo_init/data_source"
 	"fmt"
 
 	"github.com/AlecAivazis/survey/v2"

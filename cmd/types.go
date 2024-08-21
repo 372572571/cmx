@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"cmx/echo/echo_type"
-	"cmx/pkg/config"
+	config "cmx/v1/logic/aggregate/build_config"
+	"cmx/v1/logic/inside/echo/echo_type"
 	"os"
 	"path"
 	"path/filepath"

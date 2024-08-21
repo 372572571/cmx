@@ -24,6 +24,7 @@ var _ = json.Marshal
 // ----- model definition  -----
 type User struct {
 	Id        uint64                `gorm:"column:id;type:bigint unsigned;primaryKey;not null;comment:用户ID" json:"id,omitempty" yaml:"id,omitempty"`
+	Sex       string                `gorm:"column:sex;type:char(1);not null;default:0;comment:性别,[0:未知,1:男,2:女]" json:"sex,omitempty" yaml:"sex,omitempty"`
 	Type      string                `gorm:"column:type;type:varchar(10);not null;default:1;comment:用户类型" json:"type,omitempty" yaml:"type,omitempty"`
 	Passwd    string                `gorm:"column:passwd;type:varchar(64);not null;comment:密码" json:"passwd,omitempty" yaml:"passwd,omitempty"`
 	Name      string                `gorm:"column:name;type:varchar(50);not null;comment:姓名" json:"name,omitempty" yaml:"name,omitempty"`
@@ -67,6 +68,7 @@ type user struct {
 	userDo    userDo
 	ALL       field.Asterisk
 	Id        field.Uint64
+	Sex       field.String
 	Type      field.String
 	Passwd    field.String
 	Name      field.String
@@ -90,6 +92,7 @@ func newUser(db *gorm.DB, opts ...gen.DOOption) user {
 
 	tableName := _user.userDo.TableName()
 	_user.Id = field.NewUint64(tableName, "id")
+	_user.Sex = field.NewString(tableName, "sex")
 	_user.Type = field.NewString(tableName, "type")
 	_user.Passwd = field.NewString(tableName, "passwd")
 	_user.Name = field.NewString(tableName, "name")
@@ -119,6 +122,7 @@ func (c user) As(alias string) *user {
 func (c *user) updateTableName(table string) *user {
 	c.ALL = field.NewAsterisk(table)
 	c.Id = field.NewUint64(table, "id")
+	c.Sex = field.NewString(table, "sex")
 	c.Type = field.NewString(table, "type")
 	c.Passwd = field.NewString(table, "passwd")
 	c.Name = field.NewString(table, "name")
@@ -135,8 +139,9 @@ func (c *user) updateTableName(table string) *user {
 }
 
 func (c *user) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 12)
+	c.fieldMap = make(map[string]field.Expr, 13)
 	c.fieldMap["id"] = c.Id
+	c.fieldMap["sex"] = c.Sex
 	c.fieldMap["type"] = c.Type
 	c.fieldMap["passwd"] = c.Passwd
 	c.fieldMap["name"] = c.Name

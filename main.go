@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cmx/cmd"
+	cmd "cmx/cmd"
 )
 
 func main() {
