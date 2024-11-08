@@ -120,8 +120,8 @@ func (cm *createMsgAnswers) TipMessages(ref string) (success bool) {
 
 	for _, item := range values {
 		item := fmt.Sprintf(
-			"col: %s array: %t one_of: %v desc %s %s",
-			item.ColumnName, item.Array, item.OneOf.Select, item.Comment, item.DetailComment)
+			"col: %s array: %t one_of: %v desc %s",
+			item.ColumnName, item.Array, item.OneOf.Select, item.Comment)
 		content = append(content, item)
 	}
 	tip := &survey.Confirm{
@@ -151,8 +151,8 @@ func (cm *createMsgAnswers) TipMessagesField(
 	content := map[string]definition.MessageField{}
 	lo.ForEach(values, func(item definition.MessageField, index int) {
 		in := fmt.Sprintf(
-			"col: %s array: %t one_of: %v desc %s %s",
-			item.ColumnName, item.Array, item.OneOf.Select, item.Comment, item.DetailComment)
+			"col: %s array: %t one_of: %v desc %s",
+			item.ColumnName, item.Array, item.OneOf.Select, item.Comment)
 		content[in] = item
 	})
 	tip := &survey.MultiSelect{

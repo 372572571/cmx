@@ -121,7 +121,7 @@ func (m *Message) writerTypeMessage(v definition.MessageField, idx int) string {
 			child.WriterMessage(&rw) // recursive writer message
 			m.writerMessageRecord[child.Reference] = true
 		}
-		commentTag := strings.ReplaceAll(v.Comment, `"`, " ") + v.DetailComment + m.Definition.GetEnumComment(v.OneOf)
+		commentTag := (m.Definition.GetEnumComment(v.OneOf))
 		rw.WriteString(m.Tag(v.ColumnName, v.Validator, v.OneOf, commentTag, v.Serializer))
 		rw.WriteString("\n")
 		messageUpName := child.UpName
@@ -144,7 +144,10 @@ func (m *Message) writerTypeMessage(v definition.MessageField, idx int) string {
 		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(v.Comment)))
 		// rw.WriteString("\n")
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: %s`, strconv.Quote(v.DetailComment+m.Definition.GetEnumComment(v.OneOf))))
+		description := m.Definition.GetEnumComment(v.OneOf)
+		if description != "" {
+			rw.WriteString(fmt.Sprintf(`description: %s`, m.Definition.GetEnumComment(v.OneOf)))
+		}
 		// rw.WriteString("\n")
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
@@ -161,7 +164,7 @@ func (m *Message) writerTypeMessage(v definition.MessageField, idx int) string {
 func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 	rw := strings.Builder{}
 
-	commentTag := strconv.Quote(v.Comment) + v.DetailComment + m.Definition.GetEnumComment(v.OneOf)
+	commentTag := strconv.Quote(v.Comment) + m.Definition.GetEnumComment(v.OneOf)
 	rw.WriteString(m.Tag(v.ColumnName, v.Validator, v.OneOf, commentTag, v.Serializer))
 	rw.WriteString("\n")
 
@@ -177,7 +180,10 @@ func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 	rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
 	rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(v.Comment)))
 	rw.WriteString(" ")
-	rw.WriteString(fmt.Sprintf(`description: %s`, strconv.Quote((v.DetailComment + m.Definition.GetEnumComment(v.OneOf)))))
+	description := m.Definition.GetEnumComment(v.OneOf)
+	if description != "" {
+		rw.WriteString(fmt.Sprintf(`description: %s`, m.Definition.GetEnumComment(v.OneOf)))
+	}
 	// rw.WriteString("\n")
 	rw.WriteString("}")
 	m.fieldBehavior(&rw, v.Inhibit)
@@ -190,9 +196,10 @@ func (m Message) writerTypeSelf(v definition.MessageField, idx int) string {
 func (m Message) writerTypeField(v definition.MessageField, idx int) string {
 	rw := strings.Builder{}
 	if tf, found := m.Definition.GetTableField(v.Ref.Ref); found {
-		commentTag := fmt.Sprintf("%s %s %s", strconv.Quote(tf.Comment),
-			strconv.Quote(v.DetailComment),
-			m.Definition.GetEnumComment(tf.OneOf))
+		commentTag := fmt.Sprintf("%s", m.Definition.GetEnumComment(tf.OneOf))
+		if tf.Comment != "" {
+			commentTag = fmt.Sprintf("%s %s", strconv.Quote(tf.Comment), m.Definition.GetEnumComment(tf.OneOf))
+		}
 		rw.WriteString(m.Tag(v.ColumnName, tf.Validator, tf.OneOf, commentTag, v.Serializer))
 		rw.WriteString("\n")
 		rf := fmt.Sprintf("%s %s = %d", tf.Type, v.ColumnName, idx)
@@ -208,8 +215,13 @@ func (m Message) writerTypeField(v definition.MessageField, idx int) string {
 		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(tf.Comment)))
 		// rw.WriteString("\n")
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: "%s"`,
-			strconv.Quote(tf.DetailComment+m.Definition.GetEnumComment(tf.OneOf))))
+		description := m.Definition.GetEnumComment(tf.OneOf)
+		if description != "" {
+			rw.WriteString(fmt.Sprintf(`description: %s`, m.Definition.GetEnumComment(tf.OneOf)))
+		}
+		// rw.WriteString(fmt.Sprintf(`description: %s`,
+		// 	strconv.Quote(tf.DetailComment)+
+		// 		m.Definition.GetEnumComment(tf.OneOf)))
 		// rw.WriteString("\n")
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
@@ -239,10 +251,16 @@ func (m Message) writerTypeMessageField(v definition.MessageField, idx int) stri
 		if slv != tf.ColumnName {
 			panic(fmt.Errorf("not found select %s", slv))
 		}
-		commentTag := fmt.Sprintf("%s %s %s",
-			strings.ReplaceAll(tf.Comment, `"`, " "),
-			v.DetailComment,
+
+		commentTag := fmt.Sprintf("%s %s",
+			strconv.Quote(tf.Comment),
 			m.Definition.GetEnumComment(tf.OneOf))
+		if tf.Comment != "" {
+			commentTag = fmt.Sprintf("%s %s",
+				strconv.Quote(tf.Comment),
+				m.Definition.GetEnumComment(tf.OneOf))
+		}
+
 		if v.Validator != "" {
 			rw.WriteString(m.Tag(v.ColumnName, v.Validator, tf.OneOf, commentTag, v.Serializer))
 		} else {
@@ -264,9 +282,10 @@ func (m Message) writerTypeMessageField(v definition.MessageField, idx int) stri
 		rw.WriteString("[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field)={")
 		rw.WriteString(fmt.Sprintf(`title: %s`, strconv.Quote(tf.Comment)))
 		rw.WriteString(" ")
-		rw.WriteString(fmt.Sprintf(`description: %s`,
-			strconv.Quote(
-				tf.DetailComment+m.Definition.GetEnumComment(tf.OneOf))))
+		description := m.Definition.GetEnumComment(tf.OneOf)
+		if description != "" {
+			rw.WriteString(fmt.Sprintf(`description: %s`, m.Definition.GetEnumComment(tf.OneOf)))
+		}
 		rw.WriteString("}")
 		m.fieldBehavior(&rw, v.Inhibit)
 		rw.WriteString("];")

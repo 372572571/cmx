@@ -33,7 +33,7 @@ type MessageField struct {
 	OneOf         FieldOneOf       `json:"oneof" yaml:"oneof,omitempty"`
 	Ref           MessageReference `json:"ref" yaml:"ref,omitempty"`
 	Comment       string           `json:"comment" yaml:"comment,omitempty"`
-	DetailComment string           `json:"detail_comment" yaml:"detail_comment,omitempty"`
+	// DetailComment string           `json:"detail_comment" yaml:"detail_comment,omitempty"`
 	Validator     string           `json:"validator" yaml:"validator,omitempty"`
 	Inhibit       string           `json:"inhibit" yaml:"inhibit,omitempty"`
 	Serializer    string           `json:"serializer" yaml:"serializer,omitempty"`

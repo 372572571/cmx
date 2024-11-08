@@ -246,9 +246,7 @@ func (df *Definition) GetEnumComment(foo definition.FieldOneOf) string {
 			comment.WriteString(fmt.Sprintf("%s: %s ", v.Value, desc))
 		}
 	}
-
 	return strconv.Quote(comment.String())
-	// return comment.String()
 }
 
 // ! --- api---

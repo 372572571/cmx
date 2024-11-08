@@ -5,6 +5,7 @@ import (
 	"cmx/pkg/config/definition"
 	"cmx/pkg/util"
 	"fmt"
+	"regexp"
 	"strings"
 )
 
@@ -83,12 +84,25 @@ func (api Api) WriteApi(ax definition.Api) string {
 	if description == "" {
 		description = ax.Http.Summary
 	}
+
+	if ax.Tags != nil && len(*ax.Tags) > 0 {
+		tagsStr := "["
+		for _, tag := range *ax.Tags {
+			// 如果不是中文
+			if !regexp.MustCompile("[\u4e00-\u9fa5]").MatchString(tag) {
+				tagsStr += "\"" + util.ToCamelCasing(tag) + "\","
+			} else {
+				tagsStr += "\"" + tag + "\","
+			}
+		}
+		tagsStr = tagsStr[:len(tagsStr)-1] + "]"
+		sb.WriteString(fmt.Sprintf(",tags: %s", tagsStr))
+	}
 	if ax.SignType != "" {
 		switch ax.SignType {
 		case definition.SignTypeHmacSha256Secret:
 			description = fmt.Sprintf("%s \\n %s", description,
 				"```parsex auth(identity); head(app_id,sign,unix_milli);```")
-
 		}
 	}
 	description = fmt.Sprintf(",description: \"%s\"", description)

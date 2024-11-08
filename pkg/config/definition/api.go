@@ -68,10 +68,11 @@ type Api struct {
 		Body      string `json:"body" yaml:"body"`
 		Summary   string `json:"summary" yaml:"summary"`
 	} `json:"http" yaml:"http"`
-	Request     string   `json:"request" yaml:"request"`
-	Response    string   `json:"response" yaml:"response"`
-	SignType    SignType `json:"sign_type" yaml:"sign_type"`
-	Description string   `json:"description" yaml:"description"`
+	Request     string    `json:"request" yaml:"request"`
+	Response    string    `json:"response" yaml:"response"`
+	SignType    SignType  `json:"sign_type" yaml:"sign_type"`
+	Description string    `json:"description" yaml:"description"`
+	Tags        *[]string `json:"tags,omitempty" yaml:"tags,omitempty"`
 }
 
 func (e *Apidefinition) addCache() {
